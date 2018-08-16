@@ -2,23 +2,25 @@ const express = require('express');
 const hbs = require('hbs');
 
 const app = express();
-
-app.set('view engine', 'hbs');
-
 app.use(express.static(__dirname + '/public'));
 
+app.set('view engine', 'hbs');
+hbs.registerPartials(__dirname + '/views/partials');
+
+hbs.registerHelper('getCurrentYear', () => new Date().getFullYear());
+hbs.registerHelper('getTitle', () => 'Webserver');
+hbs.registerHelper('screamIt', text => text.toUpperCase());
+
 app.get('/', (req, res) => {
-  // res.send('<h1>Hello express!</h1>');
-  res.send({
-    name: 'LLL',
-    likes: ['gaming', 'surfing'],
+  res.render('home.hbs', {
+    pageTitle: 'Home Page',
+    welcomeMessage: 'Welcome to our website!',
   });
 });
 
 app.get('/about', (req, res) => {
   res.render('about.hbs', {
     pageTitle: 'About Page',
-    currentYear: new Date().getFullYear(),
   });
 });
 
